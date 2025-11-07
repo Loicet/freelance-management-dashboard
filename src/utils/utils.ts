@@ -1,6 +1,6 @@
 // utils.ts - Utility functions for the dashboard (all fully typed)
 
-import { Client, Project, Payment, DashboardStats } from "../types/types";
+import type { Client, Project, Payment, DashboardStats } from "../types/types";
 
 // 1. Count paid vs unpaid projects
 export function countProjectsByPaymentStatus(projects: Project[]): {
@@ -95,25 +95,27 @@ export function calculateDashboardStats(
   };
 }
 
-// 9. Get status color for conditional styling
-export function getStatusColor(status: Project["status"]): string {
+// 9. Get status Tailwind classes for conditional styling
+export function getStatusClasses(status: Project["status"]): string {
   switch (status) {
     case "completed":
-      return "green";
+      return "bg-green-100 text-green-700 border-green-500";
     case "in-progress":
-      return "blue";
+      return "bg-blue-100 text-blue-700 border-blue-500";
     case "pending":
-      return "orange";
+      return "bg-orange-100 text-orange-700 border-orange-500";
     default:
-      return "gray";
+      return "bg-gray-100 text-gray-700 border-gray-500";
   }
 }
 
-// 10. Get payment status color for conditional styling
-export function getPaymentStatusColor(
+// 10. Get payment status Tailwind classes for conditional styling
+export function getPaymentStatusClasses(
   paymentStatus: Project["paymentStatus"]
 ): string {
-  return paymentStatus === "paid" ? "green" : "red";
+  return paymentStatus === "paid"
+    ? "bg-green-100 text-green-700 border-green-500"
+    : "bg-red-100 text-red-700 border-red-500";
 }
 
 // 11. Format currency (helper function)

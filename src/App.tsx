@@ -1,17 +1,18 @@
 // App.tsx - Main application component
 
-import React, { useState } from "react";
-import { DashboardProvider, useDashboard } from "./DashboardContext";
-import { ClientCard } from "./ClientCard";
-import { ProjectList } from "./ProjectList";
-import { DashboardStatsComponent } from "./DashboardStats";
-import { PaymentList } from "./PaymentList";
+import { useState } from "react";
+import { DashboardProvider, useDashboard } from "./context/DashboardContext";
+import { ClientCard } from "./components/ClientCard";
+import { ProjectList } from "./components/ProjectList";
+import { DashboardStatsComponent } from "./components/DashboardStats";
+import { PaymentList } from "./components/paymentList";
 import {
   calculateDashboardStats,
   searchClientsByName,
   searchProjectsByTitle,
   filterProjectsByPaymentStatus,
-} from "./utils";
+} from "./utils/utils";
+import type { Client } from "./types/types";
 
 // Main Dashboard component (uses the context)
 function Dashboard() {
@@ -51,28 +52,13 @@ function Dashboard() {
   }
 
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        padding: "20px",
-        backgroundColor: "#f5f5f5",
-        minHeight: "100vh",
-      }}
-    >
+    <div className="w-full min-h-screen bg-gray-100 p-5">
       {/* Header */}
-      <header style={{ marginBottom: "32px" }}>
-        <h1
-          style={{
-            fontSize: "32px",
-            fontWeight: "bold",
-            color: "#333",
-            marginBottom: "8px",
-          }}
-        >
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">
           Freelance Management Dashboard
         </h1>
-        <p style={{ color: "#666", fontSize: "16px" }}>
+        <p className="text-gray-600 text-base">
           Manage your clients, projects, and payments all in one place
         </p>
       </header>
@@ -81,25 +67,11 @@ function Dashboard() {
       <DashboardStatsComponent stats={stats} />
 
       {/* Main Content Grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 2fr",
-          gap: "24px",
-          marginBottom: "24px",
-        }}
-      >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         {/* Clients Section */}
-        <div>
-          <div
-            style={{
-              backgroundColor: "#fff",
-              padding: "20px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            }}
-          >
-            <h2 style={{ marginBottom: "16px", color: "#333" }}>Clients</h2>
+        <div className="lg:col-span-1">
+          <div className="bg-white p-5 rounded-lg shadow-sm">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Clients</h2>
             
             {/* Search input for clients */}
             <input
@@ -107,23 +79,16 @@ function Dashboard() {
               placeholder="Search clients..."
               value={clientSearch}
               onChange={(e) => setClientSearch(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "8px 12px",
-                marginBottom: "16px",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                fontSize: "14px",
-              }}
+              className="w-full px-3 py-2 mb-4 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             
             {/* Client list */}
-            {filteredClients.map((client) => (
+            {filteredClients.map((client: Client) => (
               <ClientCard key={client.id} client={client} />
             ))}
             
             {filteredClients.length === 0 && (
-              <p style={{ textAlign: "center", color: "#999", padding: "20px" }}>
+              <p className="text-center text-gray-500 py-5">
                 No clients found
               </p>
             )}
@@ -131,31 +96,18 @@ function Dashboard() {
         </div>
 
         {/* Projects Section */}
-        <div>
-          <div
-            style={{
-              backgroundColor: "#fff",
-              padding: "20px",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            }}
-          >
-            <h2 style={{ marginBottom: "16px", color: "#333" }}>Projects</h2>
+        <div className="lg:col-span-2">
+          <div className="bg-white p-5 rounded-lg shadow-sm">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Projects</h2>
             
             {/* Search and filter controls */}
-            <div style={{ marginBottom: "16px", display: "flex", gap: "12px" }}>
+            <div className="mb-4 flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 placeholder="Search projects..."
                 value={projectSearch}
                 onChange={(e) => setProjectSearch(e.target.value)}
-                style={{
-                  flex: 1,
-                  padding: "8px 12px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  fontSize: "14px",
-                }}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               
               <select
@@ -163,13 +115,8 @@ function Dashboard() {
                 onChange={(e) =>
                   setPaymentFilter(e.target.value as "all" | "paid" | "unpaid")
                 }
-                style={{
-                  padding: "8px 12px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  fontSize: "14px",
-                  backgroundColor: "#fff",
-                }}
+                aria-label="Filter projects by payment status"
+                className="px-3 py-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Projects</option>
                 <option value="paid">Paid Only</option>
@@ -188,14 +135,7 @@ function Dashboard() {
       </div>
 
       {/* Payments Section */}
-      <div
-        style={{
-          backgroundColor: "#fff",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-        }}
-      >
+      <div className="bg-white p-5 rounded-lg shadow-sm">
         <PaymentList payments={state.payments} projects={state.projects} />
       </div>
     </div>

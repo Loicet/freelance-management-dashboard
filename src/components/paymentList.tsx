@@ -1,8 +1,7 @@
 // PaymentList.tsx - Component to display payment records
 
-import React from "react";
-import { Payment, Project } from "./types";
-import { formatCurrency, formatDate } from "./utils";
+import type { Payment, Project } from "../types/types";
+import { formatCurrency, formatDate } from "../utils/utils";
 
 // Typed props for the PaymentList component
 interface PaymentListProps {
@@ -14,7 +13,9 @@ interface PaymentListProps {
 export function PaymentList({ payments, projects }: PaymentListProps) {
   return (
     <div>
-      <h2 style={{ marginBottom: "16px", color: "#333" }}>Payment History</h2>
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        Payment History
+      </h2>
       
       {payments.map((payment, index) => {
         // Find the project for this payment (type-safe lookup)
@@ -24,35 +25,22 @@ export function PaymentList({ payments, projects }: PaymentListProps) {
         return (
           <div
             key={index}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              padding: "16px",
-              marginBottom: "12px",
-              backgroundColor: "#fff",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            }}
+            className="border border-gray-300 rounded-lg p-4 mb-3 bg-white shadow-sm"
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="flex justify-between items-center">
               <div>
-                <h4 style={{ margin: "0 0 8px 0", color: "#333" }}>
+                <h4 className="text-base font-semibold text-gray-800 mb-2">
                   {projectTitle}
                 </h4>
-                <p style={{ margin: "4px 0", fontSize: "14px", color: "#666" }}>
-                  <strong>Date:</strong> {formatDate(payment.date)}
+                <p className="text-sm text-gray-600 mb-1">
+                  <span className="font-semibold">Date:</span> {formatDate(payment.date)}
                 </p>
-                <p style={{ margin: "4px 0", fontSize: "12px", color: "#999" }}>
+                <p className="text-xs text-gray-400">
                   Project ID: {payment.projectId}
                 </p>
               </div>
               
-              <div
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "bold",
-                  color: "#4CAF50",
-                }}
-              >
+              <div className="text-2xl font-bold text-green-600">
                 {formatCurrency(payment.amount)}
               </div>
             </div>
@@ -62,7 +50,7 @@ export function PaymentList({ payments, projects }: PaymentListProps) {
       
       {/* Show message if no payments */}
       {payments.length === 0 && (
-        <p style={{ textAlign: "center", color: "#999", padding: "20px" }}>
+        <p className="text-center text-gray-500 py-5">
           No payment records found
         </p>
       )}

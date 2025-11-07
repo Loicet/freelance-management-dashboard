@@ -1,8 +1,7 @@
 // ClientCard.tsx - Reusable component to display client information
 
-import React from "react";
-import { Client } from "./types";
-import { getClientEmail } from "./utils";
+import type { Client } from "../types/types";
+import { getClientEmail } from "../utils/utils";
 
 // Typed props for the ClientCard component
 interface ClientCardProps {
@@ -12,36 +11,21 @@ interface ClientCardProps {
 // ClientCard component - displays a single client's information
 export function ClientCard({ client }: ClientCardProps) {
   return (
-    <div
-      style={{
-        border: "1px solid #ddd",
-        borderRadius: "8px",
-        padding: "16px",
-        marginBottom: "12px",
-        backgroundColor: "#fff",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h3 style={{ margin: "0 0 8px 0", color: "#333" }}>
+    <div className="border border-gray-300 rounded-lg p-4 mb-3 bg-white shadow-sm">
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">
         {client.name}
       </h3>
       
-      <div style={{ fontSize: "14px", color: "#666" }}>
-        <p style={{ margin: "4px 0" }}>
-          <strong>Country:</strong> {client.country}
+      <div className="text-sm text-gray-600">
+        <p className="mb-1">
+          <span className="font-semibold">Country:</span> {client.country}
         </p>
         
-        <p style={{ margin: "4px 0" }}>
-          <strong>Email:</strong> {getClientEmail(client)}
+        <p className="mb-1">
+          <span className="font-semibold">Email:</span> {getClientEmail(client)}
         </p>
         
-        <p
-          style={{
-            margin: "8px 0 0 0",
-            fontSize: "12px",
-            color: "#999",
-          }}
-        >
+        <p className="mt-2 text-xs text-gray-400">
           ID: {client.id}
         </p>
       </div>

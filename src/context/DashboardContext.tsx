@@ -1,8 +1,9 @@
 // DashboardContext.tsx - Global state management with Context API + useReducer
 
-import React, { createContext, useReducer, useContext, ReactNode } from "react";
-import { DashboardState, DashboardAction } from "./types";
-import { initialClients, initialProjects, initialPayments } from "./initialData";
+import { createContext, useReducer, useContext } from "react";
+import type { ReactNode } from "react";
+import type { DashboardState, DashboardAction } from "../types/types";
+import { initialClients, initialProjects, initialPayments } from "../data/initialData";
 
 // Initial state for the dashboard
 const initialState: DashboardState = {

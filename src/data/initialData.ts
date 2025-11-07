@@ -1,6 +1,6 @@
 // initialData.ts - Sample data for the dashboard
 
-import { Client, Project, Payment } from "../types/types";
+import type { Client, Project, Payment } from "../types/types";
 
 // Sample clients
 export const initialClients: Client[] = [

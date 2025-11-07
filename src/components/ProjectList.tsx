@@ -1,13 +1,12 @@
 // ProjectList.tsx - Component to display and manage projects
 
-import React from "react";
-import { Project, Client } from "./types";
+import type { Project, Client } from "../types/types";
 import {
   findClientById,
   formatCurrency,
-  getStatusColor,
-  getPaymentStatusColor,
-} from "./utils";
+  getStatusClasses,
+  getPaymentStatusClasses,
+} from "../utils/utils";
 
 // Typed props for the ProjectList component
 interface ProjectListProps {
@@ -25,64 +24,37 @@ export function ProjectList({ projects, clients, onMarkPaid }: ProjectListProps)
         const client = findClientById(clients, project.clientId);
         const clientName = client ? client.name : "Client not found";
 
-        // Get colors for conditional styling
-        const statusColor = getStatusColor(project.status);
-        const paymentColor = getPaymentStatusColor(project.paymentStatus);
+        // Get Tailwind classes for conditional styling
+        const statusClasses = getStatusClasses(project.status);
+        const paymentClasses = getPaymentStatusClasses(project.paymentStatus);
 
         return (
           <div
             key={project.id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              padding: "16px",
-              marginBottom: "12px",
-              backgroundColor: "#fff",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            }}
+            className="border border-gray-300 rounded-lg p-4 mb-3 bg-white shadow-sm"
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
-              <div style={{ flex: 1 }}>
-                <h3 style={{ margin: "0 0 8px 0", color: "#333" }}>
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   {project.title}
                 </h3>
                 
-                <p style={{ margin: "4px 0", fontSize: "14px", color: "#666" }}>
-                  <strong>Client:</strong> {clientName}
+                <p className="text-sm text-gray-600 mb-1">
+                  <span className="font-semibold">Client:</span> {clientName}
                 </p>
                 
-                <p style={{ margin: "4px 0", fontSize: "14px", color: "#666" }}>
-                  <strong>Budget:</strong> {formatCurrency(project.budget)}
+                <p className="text-sm text-gray-600 mb-1">
+                  <span className="font-semibold">Budget:</span> {formatCurrency(project.budget)}
                 </p>
                 
-                <div style={{ marginTop: "8px", display: "flex", gap: "12px" }}>
-                  {/* Status badge with conditional styling */}
-                  <span
-                    style={{
-                      padding: "4px 12px",
-                      borderRadius: "12px",
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      backgroundColor: `${statusColor}20`,
-                      color: statusColor,
-                      border: `1px solid ${statusColor}`,
-                    }}
-                  >
+                <div className="mt-2 flex gap-3">
+                  {/* Status badge with conditional Tailwind styling */}
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold border ${statusClasses}`}>
                     {project.status.toUpperCase()}
                   </span>
                   
-                  {/* Payment status badge with conditional styling */}
-                  <span
-                    style={{
-                      padding: "4px 12px",
-                      borderRadius: "12px",
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      backgroundColor: `${paymentColor}20`,
-                      color: paymentColor,
-                      border: `1px solid ${paymentColor}`,
-                    }}
-                  >
+                  {/* Payment status badge with conditional Tailwind styling */}
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold border ${paymentClasses}`}>
                     {project.paymentStatus.toUpperCase()}
                   </span>
                 </div>
@@ -92,22 +64,7 @@ export function ProjectList({ projects, clients, onMarkPaid }: ProjectListProps)
               {project.paymentStatus === "unpaid" && (
                 <button
                   onClick={() => onMarkPaid(project.id)}
-                  style={{
-                    padding: "8px 16px",
-                    backgroundColor: "#4CAF50",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = "#45a049";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = "#4CAF50";
-                  }}
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition text-sm font-semibold"
                 >
                   Mark as Paid
                 </button>
@@ -119,7 +76,7 @@ export function ProjectList({ projects, clients, onMarkPaid }: ProjectListProps)
       
       {/* Show message if no projects */}
       {projects.length === 0 && (
-        <p style={{ textAlign: "center", color: "#999", padding: "20px" }}>
+        <p className="text-center text-gray-500 py-5">
           No projects found
         </p>
       )}

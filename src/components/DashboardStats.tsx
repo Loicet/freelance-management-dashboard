@@ -1,8 +1,7 @@
 // DashboardStats.tsx - Component to display dashboard statistics
 
-import React from "react";
-import { DashboardStats } from "./types";
-import { formatCurrency } from "./utils";
+import type { DashboardStats } from "../types/types";
+import { formatCurrency } from "../utils/utils";
 
 // Typed props for the DashboardStats component
 interface DashboardStatsProps {
@@ -16,67 +15,41 @@ export function DashboardStatsComponent({ stats }: DashboardStatsProps) {
     {
       label: "Total Clients",
       value: stats.totalClients,
-      color: "#2196F3",
+      colorClasses: "border-blue-500 text-blue-600",
     },
     {
       label: "Total Projects",
       value: stats.totalProjects,
-      color: "#9C27B0",
+      colorClasses: "border-purple-500 text-purple-600",
     },
     {
       label: "Paid Projects",
       value: stats.paidProjects,
-      color: "#4CAF50",
+      colorClasses: "border-green-500 text-green-600",
     },
     {
       label: "Unpaid Projects",
       value: stats.unpaidProjects,
-      color: "#F44336",
+      colorClasses: "border-red-500 text-red-600",
     },
     {
       label: "Total Revenue",
       value: formatCurrency(stats.totalRevenue),
-      color: "#FF9800",
+      colorClasses: "border-orange-500 text-orange-600",
     },
   ];
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-        gap: "16px",
-        marginBottom: "24px",
-      }}
-    >
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
       {statItems.map((item, index) => (
         <div
           key={index}
-          style={{
-            backgroundColor: "#fff",
-            padding: "20px",
-            borderRadius: "8px",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            border: `2px solid ${item.color}`,
-          }}
+          className={`bg-white p-5 rounded-lg shadow-sm border-2 ${item.colorClasses}`}
         >
-          <div
-            style={{
-              fontSize: "14px",
-              color: "#666",
-              marginBottom: "8px",
-              fontWeight: "500",
-            }}
-          >
+          <div className="text-sm text-gray-600 mb-2 font-medium">
             {item.label}
           </div>
-          <div
-            style={{
-              fontSize: "28px",
-              fontWeight: "bold",
-              color: item.color,
-            }}
-          >
+          <div className={`text-3xl font-bold ${item.colorClasses}`}>
             {item.value}
           </div>
         </div>
